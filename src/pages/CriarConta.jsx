@@ -5,13 +5,13 @@ import Container from 'react-bootstrap/Container';
 import { Link } from 'react-router-dom';
 
 
-export default function Login () {
+export default function CriarConta () {
     return(
         <Container style={{height: "80%"}} className="d-flex justify-content-center align-items-center">
 
                 <Form method="post" className="bg-primary p-3 ps-4 rounded" style={{ width: "450px", textAlign: "left"}}>
 
-                    <h2>Fazer login</h2>
+                    <h2>Crie sua conta</h2>
 
                     <Form.Group className="mb-3" controlId="formBasicEmail" style={{textAlign: "left"}} >
                         <Form.Label>Seu Email</Form.Label>
@@ -19,15 +19,20 @@ export default function Login () {
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword" style={{textAlign: "left"}} >
-                        <Form.Label>Sua Senha</Form.Label>
+                        <Form.Label>Crie uma senha</Form.Label>
                         <Form.Control type="senha" placeholder="Senha" />
                     </Form.Group>
 
-                    <Button  className="my-3" variant="light" type="submit" style={{ width: "100%" }}>Entrar</Button>
+                    <Form.Group className="mb-3" controlId="formBasicPassword" style={{textAlign: "left"}} >
+                        <Form.Label>Repita sua senha</Form.Label>
+                        <Form.Control type="senha" placeholder="Senha" />
+                    </Form.Group>
+                    <Form.Text style={{color: "whitesmoke"}} >Sua senha deve conter:<br/>- Entre 6 a 20 caracteres<br/>- Letras maiúsculas e minúsculas<br/>- Números<br/>- Caracteres especiais(Ex: !, @, #, $)</Form.Text>
 
-                    <Form.Text style={{ textDecoration: "underline", color: "white", fontSize: "1em" }}>
-                        <Link to="/criarconta">Criar Conta</Link>
-                    </Form.Text>
+                    <Button  className="my-3" variant="light" type="submit" style={{ width: "100%" }}>Criar conta</Button>
+
+                    <Form.Text style={{color: "whitesmoke"}}>Já tem conta? <Link to="/login" style={{textDecoration: "underline"}}>Faça login!</Link></Form.Text>
+
                 </Form>
         </Container>
     )
