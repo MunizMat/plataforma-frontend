@@ -17,18 +17,18 @@ export default function Login () {
 
                     <Form.Group className="mb-3" controlId="formBasicEmail" style={{textAlign: "left"}} >
                         <Form.Label>Seu Email</Form.Label>
-                        <Form.Control type="email" placeholder="Email" />
+                        <Form.Control required type="email" placeholder="Email" />
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword" style={{textAlign: "left"}} >
                         <Form.Label>Sua Senha</Form.Label>
-                        <Form.Control type="password" placeholder="Senha" />
+                        <Form.Control required type="password" placeholder="Senha" />
                     </Form.Group>
 
                     <Button  className="my-3" variant="primary" type="submit" style={{ width: "100%" }}>Entrar</Button>
 
-                    <Form.Text style={{ textDecoration: "underline", color: "white", fontSize: "1em" }}>
-                        <Link to="/criarconta">Criar Conta</Link>
+                    <Form.Text style={{ textDecoration: "underline", fontSize: "1em" }}>
+                        <Link to="/register">Criar Conta</Link>
                     </Form.Text>
                 </Form>
         </Container>
