@@ -8,10 +8,15 @@ import './index.css';
 
 
 export default function Register () {
+
+    const handleSubmit = (e) => {
+        // e.preventDefault();
+    }
+
     return(
         <Container style={{height: "80%"}} className="d-flex justify-content-center align-items-center">
 
-                <Form className="form bg-light p-3 ps-4 rounded" style={{ width: "450px", textAlign: "left"}}>
+                <Form noValidate className="form bg-light p-3 ps-4 rounded" onSubmit={handleSubmit} style={{ width: "450px", textAlign: "left"}}>
 
                     <h2>Crie sua conta</h2>
 
