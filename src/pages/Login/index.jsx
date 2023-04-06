@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import { Link } from 'react-router-dom';
+import './index.css';
 
 
 export default function Login () {
@@ -10,8 +11,7 @@ export default function Login () {
   
     return(
         <Container style={{height: "80%"}} className="d-flex justify-content-center align-items-center">
-
-                <Form  className="bg-primary p-3 ps-4 rounded" style={{ width: "450px", textAlign: "left"}}>
+                <Form  className="form bg-light p-3 ps-4 rounded" style={{ width: "450px", textAlign: "left"}}>
 
                     <h2>Fazer login</h2>
 
