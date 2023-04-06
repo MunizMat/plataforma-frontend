@@ -25,7 +25,7 @@ export default function Login () {
                         <Form.Control type="password" placeholder="Senha" />
                     </Form.Group>
 
-                    <Button  className="my-3" variant="light" type="submit" style={{ width: "100%" }}>Entrar</Button>
+                    <Button  className="my-3" variant="primary" type="submit" style={{ width: "100%" }}>Entrar</Button>
 
                     <Form.Text style={{ textDecoration: "underline", color: "white", fontSize: "1em" }}>
                         <Link to="/criarconta">Criar Conta</Link>
