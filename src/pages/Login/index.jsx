@@ -1,35 +1,32 @@
 import React, { useState, useRef } from "react";
+import { Link } from 'react-router-dom';
+import { emailIsValid, fieldIsEmpty } from "@modules/formValidation";
+import './index.css';
+//Bootstrap 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import { Link } from 'react-router-dom';
-import './index.css';
 
 
 export default function Login () {
     const [validated, setValidated] = useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = useState('Este campo é obrigatório');
     const emailRef = useRef();
-
-    const emailIsValid = (email) => {
-        const regExp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-        const isValid = regExp.test(email);
-        return isValid;
-    } 
-
-    const fieldIsEmpty = (field) => {
-        const isEmpty = field === '' ? true : false;
-        return isEmpty;
-    } 
+    const formRef = useRef();
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        const form = event.currentTarget;
 
         if(!fieldIsEmpty(emailRef.current.value) && !emailIsValid(emailRef.current.value)) {
             setEmailErrorMessage('Email inválido');
         } 
-        
+
         setValidated(true);
+
+        if(form.checkValidity()) {
+            form.submit();
+        }
     }
   
     return(
