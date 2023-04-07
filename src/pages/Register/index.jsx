@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Link } from 'react-router-dom';
-import { emailIsValid, fieldIsEmpty, passwordIsValid } from "@modules/formValidation";
+import { emailIsValid, fieldIsEmpty, validatePassword } from "@modules/formValidation";
 // Bootstrap
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -13,6 +13,7 @@ import './index.css';
 export default function Register () {
     const [validated, setValidated] = useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = useState('Este campo é obrigatório');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('Este campo é obrigatório');
     const emailRef = useRef();
     const passwordRef = useRef();
 
@@ -25,7 +26,11 @@ export default function Register () {
             setEmailErrorMessage('Email inválido');
         } 
 
-        console.log(passwordIsValid(passwordRef.current.value));
+        const { passwordIsValid, errorMessage} = validatePassword(passwordRef.current.value);
+
+        if (!passwordIsValid){
+            setPasswordErrorMessage(errorMessage);
+        }
 
         setValidated(true);
 
@@ -49,8 +54,8 @@ export default function Register () {
 
                     <Form.Group className="mb-3" controlId="formBasicPassword" style={{textAlign: "left"}} >
                         <Form.Label>Crie uma senha</Form.Label>
-                        <Form.Control ref={passwordRef} required type="senha" placeholder="Senha" />
-                        <Form.Control.Feedback type="invalid">Este campo é obrigatório</Form.Control.Feedback>
+                        <Form.Control isValid={false} isInvalid={true} ref={passwordRef} required type="senha" placeholder="Senha" />
+                        <Form.Control.Feedback type="invalid">{passwordErrorMessage}</Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword" style={{textAlign: "left"}} >

@@ -4,10 +4,10 @@ const emailIsValid = (email) => {
     return isValid;
 } 
 
-const passwordIsValid = (password) => {
+const validatePassword = (password) => {
     let regExp;
     let isValid = false;
-    let errorMessage;
+    let errorMessage = '';
     const valididtyObject = {
         isValid
     }
@@ -41,7 +41,7 @@ const passwordIsValid = (password) => {
     }
 
     isValid = true;
-    return { isValid } 
+    return { isValid, errorMessage } 
 } 
 
 const fieldIsEmpty = (field) => {
@@ -49,4 +49,4 @@ const fieldIsEmpty = (field) => {
     return isEmpty;
 } 
 
-export {emailIsValid, fieldIsEmpty, passwordIsValid};
+export {emailIsValid, fieldIsEmpty, validatePassword};
