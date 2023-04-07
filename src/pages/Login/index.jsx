@@ -12,7 +12,6 @@ export default function Login () {
     const [validated, setValidated] = useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = useState('Este campo é obrigatório');
     const emailRef = useRef();
-    const formRef = useRef();
 
     const handleSubmit = (event) => {
         event.preventDefault();
