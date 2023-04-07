@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 
 import './index.css';
+import { send } from "process";
 
 
 
@@ -30,7 +31,7 @@ export default function Register () {
     const repeatPasswordRef = useRef();
 
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async(event) => {
         event.preventDefault();
 
         /* Executando funções de validação de campo. A funçao "validate<nomeDoCampo>" retorna um objeto que informa se o campo é valido, e, caso seja inválido, qual mensagem de erro deve ser exibida */
@@ -69,7 +70,17 @@ export default function Register () {
         // Validação de todos os campos simultaneamente
         if(emailIsValid && passwordIsValid && repeatPasswordIsValid) {
             const form = event.currentTarget;
-            form.submit();
+            try {
+                await fetch('http://localhost:3000/users', {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify({ hello: 'hello world'})
+                })
+                console.log('A requisição obteve sucesso');
+            } catch (error) {
+                console.log(error);
+                console.log('A requisição não obteve sucesso');
+            }
         }
     }
 
