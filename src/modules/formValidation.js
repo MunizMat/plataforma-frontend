@@ -22,10 +22,14 @@ const validateEmail = (email) => {
     return {emailIsValid, emailErrorMessage};
 } 
 
+
+
 const fieldIsEmpty = (field) => {
     const isEmpty = field === '' ? true : false;
     return isEmpty;
 } 
+
+
 
 const validatePassword = (password) => {
     let regExp;
