@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { validateEmail, validatePassword, validateRepeatPassword, fieldIsEmpty } from "@modules/formValidation";
 // Bootstrap
 import Form from 'react-bootstrap/Form';
@@ -7,11 +7,31 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 
 import './index.css';
-import { send } from "process";
+
+async function sendToApi(bodyObject){
+    try {
+        fetch('http://localhost:3000/users', {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(bodyObject)
+        })
+    } catch (error) {
+        console.log(error);
+        console.log('A requisição não obteve sucesso');
+    }
+}
+
+
+
+
 
 
 
 export default function Register () {
+
+    const navigate = useNavigate();
 
     // Estados de verificação da veracidade dos campos
     const [nameInvalidity, setNameInvalidity] = useState(false);
@@ -70,17 +90,10 @@ export default function Register () {
         // Validação de todos os campos simultaneamente
         if(emailIsValid && passwordIsValid && repeatPasswordIsValid) {
             const form = event.currentTarget;
-            try {
-                await fetch('http://localhost:3000/users', {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify({ hello: 'hello world'})
-                })
-                console.log('A requisição obteve sucesso');
-            } catch (error) {
-                console.log(error);
-                console.log('A requisição não obteve sucesso');
-            }
+            const formData = new FormData(form);
+            const dataObject = Object.fromEntries(formData.entries());
+            await sendToApi(dataObject);
+            navigate('/login', { state: true});
         }
     }
 

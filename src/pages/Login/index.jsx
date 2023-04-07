@@ -1,14 +1,17 @@
 import React, { useState, useRef } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { validateEmail, fieldIsEmpty} from "@modules/formValidation";
 import './index.css';
 //Bootstrap 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
+import Alert from 'react-bootstrap/Alert';
 
 
 export default function Login () {
+    const location = useLocation();
+
     // Estados de verificação da veracidade dos campos
     const [emailInvalidity, setEmailInvalidity] = useState(false);
     const [passwordInvalidity, setPasswordInvalidity] = useState(false);
@@ -44,10 +47,12 @@ export default function Login () {
     }
   
     return(
-        <Container style={{height: "80%"}} className="d-flex justify-content-center align-items-center">
+        <Container style={{height: "80%", marginTop: "100px"}} className="d-flex justify-content-center align-items-center">
                 <Form noValidate onSubmit={handleSubmit} className="form bg-light p-3 ps-4 rounded" style={{ width: "450px", textAlign: "left"}}>
 
                     <h2>Fazer login</h2>
+
+                    {location.state && <Alert variant="success">Conta criada com sucesso!</Alert>}
 
                     <Form.Group className="mb-3" controlId="formBasicEmail" style={{textAlign: "left"}} >
                         <Form.Label>Seu Email</Form.Label>
