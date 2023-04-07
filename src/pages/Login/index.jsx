@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Link } from 'react-router-dom';
-import { emailIsValid, fieldIsEmpty } from "@modules/formValidation";
+// import { emailIsValid, fieldIsEmpty } from "@modules/formValidation";
 import './index.css';
 //Bootstrap 
 import Form from 'react-bootstrap/Form';
