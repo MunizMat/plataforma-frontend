@@ -10,13 +10,16 @@ import './index.css';
 
 async function sendToApi(bodyObject){
     try {
-        fetch('http://localhost:3000/users', {
+        const request = await fetch('http://localhost:3000/users', {
             method: 'POST', 
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(bodyObject)
-        })
+        });
+        const responseJson = await request.json();
+        return responseJson;
+
     } catch (error) {
         console.log(error);
         console.log('A requisição não obteve sucesso');
@@ -92,8 +95,25 @@ export default function Register () {
             const form = event.currentTarget;
             const formData = new FormData(form);
             const dataObject = Object.fromEntries(formData.entries());
-            await sendToApi(dataObject);
-            navigate('/login', { state: true});
+            const apiErrors = await sendToApi(dataObject);
+            if(apiErrors.length > 0){
+                switch(apiErrors[0].field){
+                    case 'nome':
+                        setNameInvalidity(true);
+                        break;
+                    case 'email':
+                        setEmailErrorMessage(apiErrors[0].message);
+                        setEmailInvalidity(true);
+                        break;
+                    case 'senha':
+                        setPasswordErrorMessage(apiErrors[0].message);
+                        setPasswordInvalidity(true);
+                        break;
+                }
+            } else {
+                navigate('/login', { state: true });
+            }
+
         }
     }
 
