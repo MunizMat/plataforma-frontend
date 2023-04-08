@@ -2,6 +2,8 @@ import React, { useState, useRef } from "react";
 import { Link, useLocation } from 'react-router-dom';
 import { validateEmail, fieldIsEmpty} from "@modules/formValidation";
 import './index.css';
+import { sendToApi } from "@modules/apiMethods";
+
 //Bootstrap 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -19,7 +21,7 @@ export default function Login () {
     const emailRef = useRef();
     const passwordRef = useRef();
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
          /* Executando funções de validação de campo. A funçao "validate<nomeDoCampo>" retorna um objeto que informa se o campo é valido, e, caso seja inválido, qual mensagem de erro deve ser exibida */
@@ -42,7 +44,10 @@ export default function Login () {
 
         if(emailIsValid && !(fieldIsEmpty(passwordRef.current.value))) {
             const form = event.currentTarget;
-            form.submit();
+            const formData = new FormData(form);
+            const dataObject = Object.fromEntries(formData.entries());
+            const apiErrors = await sendToApi(dataObject, `http://localhost:3000/users/${dataObject.email}`, 'GET');
+            console.log(apiErrors);
         }
     }
   
@@ -56,13 +61,13 @@ export default function Login () {
 
                     <Form.Group className="mb-3" controlId="formBasicEmail" style={{textAlign: "left"}} >
                         <Form.Label>Seu Email</Form.Label>
-                        <Form.Control isInvalid={emailInvalidity} required ref={emailRef} type="email" placeholder="Email" />
+                        <Form.Control name="email" isInvalid={emailInvalidity} required ref={emailRef} type="email" placeholder="Email" />
                         <Form.Control.Feedback type="invalid">{emailErrorMessage}</Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword" style={{textAlign: "left"}} >
                         <Form.Label>Sua Senha</Form.Label>
-                        <Form.Control isInvalid={passwordInvalidity} required ref={passwordRef} type="password" placeholder="Senha" />
+                        <Form.Control name="senha" isInvalid={passwordInvalidity} required ref={passwordRef} type="password" placeholder="Senha" />
                         <Form.Control.Feedback type="invalid">Este campo é obrigatório</Form.Control.Feedback>
                     </Form.Group>
 

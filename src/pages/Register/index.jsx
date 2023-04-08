@@ -1,36 +1,13 @@
 import React, { useState, useRef } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { validateEmail, validatePassword, validateRepeatPassword, fieldIsEmpty } from "@modules/formValidation";
+import { sendToApi } from "@modules/apiMethods";
 // Bootstrap
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 
 import './index.css';
-
-async function sendToApi(bodyObject){
-    try {
-        const request = await fetch('http://localhost:3000/users', {
-            method: 'POST', 
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(bodyObject)
-        });
-        const responseJson = await request.json();
-        return responseJson;
-
-    } catch (error) {
-        console.log(error);
-        console.log('A requisição não obteve sucesso');
-    }
-}
-
-
-
-
-
-
 
 export default function Register () {
 
@@ -95,7 +72,7 @@ export default function Register () {
             const form = event.currentTarget;
             const formData = new FormData(form);
             const dataObject = Object.fromEntries(formData.entries());
-            const apiErrors = await sendToApi(dataObject);
+            const apiErrors = await sendToApi(dataObject, 'http://localhost:3000/users', 'POST');
             if(apiErrors.length > 0){
                 switch(apiErrors[0].field){
                     case 'nome':
@@ -125,7 +102,7 @@ export default function Register () {
                     <h2>Crie sua conta</h2>
 
                     <Form.Group className="mb-3" controlId="formSurname" style={{textAlign: "left"}} >
-                        <Form.Label>Nome</Form.Label>
+                        <Form.Label>Nome <small>*</small></Form.Label>
                         <Form.Control name="nome" isInvalid={nameInvalidity} ref={nameRef} required type="text" placeholder="Nome" />
                         <Form.Control.Feedback type="invalid">Este campo é obrigatório</Form.Control.Feedback>
                     </Form.Group>
@@ -136,19 +113,19 @@ export default function Register () {
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicEmail" style={{textAlign: "left"}} >
-                        <Form.Label>Seu Email</Form.Label>
+                        <Form.Label>Seu Email <small>*</small></Form.Label>
                         <Form.Control name="email" isInvalid={emailInvalidity} ref={emailRef} required type="email" placeholder="Email" />
                         <Form.Control.Feedback type="invalid">{emailErrorMessage}</Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword" style={{textAlign: "left"}} >
-                        <Form.Label>Crie uma senha</Form.Label>
+                        <Form.Label>Crie uma senha <small>*</small></Form.Label>
                         <Form.Control name="senha" isInvalid={passwordInvalidity} ref={passwordRef} required type="password" placeholder="Senha" />
                         <Form.Control.Feedback type="invalid">{passwordErrorMessage}</Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicRepeatPassword" style={{textAlign: "left"}} >
-                        <Form.Label>Repita sua senha</Form.Label>
+                        <Form.Label>Repita sua senha <small>*</small></Form.Label>
                         <Form.Control name="repetirSenha" isInvalid={repeatPasswordInvalidity} ref={repeatPasswordRef} required type="password" placeholder="Senha" />
                         <Form.Control.Feedback type="invalid">{repeatPasswordErrorMessage}</Form.Control.Feedback>
                     </Form.Group>
