@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, redirect } from 'react-router-dom';
 import { validateEmail, fieldIsEmpty} from "@modules/formValidation";
 import './index.css';
 import { sendToApi } from "@modules/apiMethods";
@@ -17,6 +17,11 @@ import Alert from 'react-bootstrap/Alert';
 
 export default function Login () {
     const location = useLocation();
+    // const navigate = useNavigate();
+
+    if(true){
+        redirect('/');
+    }
 
     // Estados de verificação da veracidade dos campos
     const [emailInvalidity, setEmailInvalidity] = useState(false);
