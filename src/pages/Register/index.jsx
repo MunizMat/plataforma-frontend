@@ -2,6 +2,11 @@ import React, { useState, useRef } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { validateEmail, validatePassword, validateRepeatPassword, fieldIsEmpty } from "@modules/formValidation";
 import { sendToApi } from "@modules/apiMethods";
+
+// Components
+import { Email } from "../../components/Email";
+import { Senha } from "../../components/Senha";
+
 // Bootstrap
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -102,7 +107,7 @@ export default function Register () {
                     <h2>Crie sua conta</h2>
 
                     <Form.Group className="mb-3" controlId="formSurname" style={{textAlign: "left"}} >
-                        <Form.Label>Nome <small>*</small></Form.Label>
+                        <Form.Label>Nome</Form.Label>
                         <Form.Control name="nome" isInvalid={nameInvalidity} ref={nameRef} required type="text" placeholder="Nome" />
                         <Form.Control.Feedback type="invalid">Este campo é obrigatório</Form.Control.Feedback>
                     </Form.Group>
@@ -112,20 +117,19 @@ export default function Register () {
                         <Form.Control name="sobrenome" type="text" placeholder="Sobrenome" />
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formBasicEmail" style={{textAlign: "left"}} >
-                        <Form.Label>Seu Email <small>*</small></Form.Label>
-                        <Form.Control name="email" isInvalid={emailInvalidity} ref={emailRef} required type="email" placeholder="Email" />
-                        <Form.Control.Feedback type="invalid">{emailErrorMessage}</Form.Control.Feedback>
-                    </Form.Group>
+                    <Email 
+                    emailInvalidity={emailInvalidity} 
+                    emailErrorMessage={emailErrorMessage} 
+                    emailRef={emailRef} />
 
-                    <Form.Group className="mb-3" controlId="formBasicPassword" style={{textAlign: "left"}} >
-                        <Form.Label>Crie uma senha <small>*</small></Form.Label>
-                        <Form.Control name="senha" isInvalid={passwordInvalidity} ref={passwordRef} required type="password" placeholder="Senha" />
-                        <Form.Control.Feedback type="invalid">{passwordErrorMessage}</Form.Control.Feedback>
-                    </Form.Group>
+                    <Senha 
+                    label="Crie sua senha" 
+                    passwordInvalidity={passwordInvalidity} 
+                    passwordRef={passwordRef} 
+                    passwordErrorMessage={passwordErrorMessage}/>
 
                     <Form.Group className="mb-3" controlId="formBasicRepeatPassword" style={{textAlign: "left"}} >
-                        <Form.Label>Repita sua senha <small>*</small></Form.Label>
+                        <Form.Label>Repita sua senha</Form.Label>
                         <Form.Control name="repetirSenha" isInvalid={repeatPasswordInvalidity} ref={repeatPasswordRef} required type="password" placeholder="Senha" />
                         <Form.Control.Feedback type="invalid">{repeatPasswordErrorMessage}</Form.Control.Feedback>
                     </Form.Group>

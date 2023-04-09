@@ -4,6 +4,10 @@ import { validateEmail, fieldIsEmpty} from "@modules/formValidation";
 import './index.css';
 import { sendToApi } from "@modules/apiMethods";
 
+// Components
+import { Email } from "../../components/Email";
+import { Senha } from "../../components/Senha";
+
 //Bootstrap 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -59,17 +63,9 @@ export default function Login () {
 
                     {location.state && <Alert variant="success">Conta criada com sucesso!</Alert>}
 
-                    <Form.Group className="mb-3" controlId="formBasicEmail" style={{textAlign: "left"}} >
-                        <Form.Label>Seu Email</Form.Label>
-                        <Form.Control name="email" isInvalid={emailInvalidity} required ref={emailRef} type="email" placeholder="Email" />
-                        <Form.Control.Feedback type="invalid">{emailErrorMessage}</Form.Control.Feedback>
-                    </Form.Group>
+                    <Email emailInvalidity={emailInvalidity} emailErrorMessage={emailErrorMessage} emailRef={emailRef} />
 
-                    <Form.Group className="mb-3" controlId="formBasicPassword" style={{textAlign: "left"}} >
-                        <Form.Label>Sua Senha</Form.Label>
-                        <Form.Control name="senha" isInvalid={passwordInvalidity} required ref={passwordRef} type="password" placeholder="Senha" />
-                        <Form.Control.Feedback type="invalid">Este campo é obrigatório</Form.Control.Feedback>
-                    </Form.Group>
+                    <Senha label="Sua senha" passwordInvalidity={passwordInvalidity} passwordRef={passwordRef} passwordErrorMessage="Este campo é obrigatório"/>
 
                     <Button  className="my-3" variant="primary" type="submit" style={{ width: "100%" }}>Entrar</Button>
 
