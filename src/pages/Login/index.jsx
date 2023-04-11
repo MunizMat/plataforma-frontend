@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
-import { Link, useLocation, redirect } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { validateEmail, fieldIsEmpty} from "@modules/formValidation";
 import './index.css';
-import { sendToApi } from "@modules/apiMethods";
+import { fetchToken } from "../../features/auth/authSlice";
+import { useDispatch, useSelector } from 'react-redux';
 
 // Components
 import { Email } from "../../components/Email";
@@ -17,11 +18,8 @@ import Alert from 'react-bootstrap/Alert';
 
 export default function Login () {
     const location = useLocation();
-    // const navigate = useNavigate();
-
-    if(true){
-        redirect('/');
-    }
+    const dispatch = useDispatch();
+    const info = useSelector((state) => state.auth);
 
     // Estados de verificação da veracidade dos campos
     const [emailInvalidity, setEmailInvalidity] = useState(false);
@@ -55,8 +53,9 @@ export default function Login () {
             const form = event.currentTarget;
             const formData = new FormData(form);
             const dataObject = Object.fromEntries(formData.entries());
-            const apiErrors = await sendToApi(dataObject, `http://localhost:3000/auth`, 'POST');
-            console.log(apiErrors);
+            // const apiErrors = await sendToApi(dataObject, `http://localhost:3000/auth`, 'POST');
+            dispatch(fetchToken({email: 'matheusmuniz215@gmail.com', senha: 'Muniz9900!'}));
+            console.log(info);
         }
     }
   

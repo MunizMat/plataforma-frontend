@@ -1,12 +1,8 @@
+import axios from 'axios';
+
 export async function sendToApi(bodyObject, url, method){
     try {
-        const request = await fetch(url, {
-            method: method, 
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(bodyObject)
-        });
+        const request = await axios.post(url, bodyObject)
         const responseJson = await request.json();
         return responseJson;
 
