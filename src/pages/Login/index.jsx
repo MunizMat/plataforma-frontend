@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from "react";
+import { Link, useNavigate } from 'react-router-dom';
 import { validateEmail, fieldIsEmpty} from "@modules/formValidation";
 import './index.css';
 import { fetchToken } from "../../features/auth/authSlice";
@@ -13,11 +13,10 @@ import { Senha } from "../../components/Senha";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import Alert from 'react-bootstrap/Alert';
 
 
 export default function Login () {
-    const location = useLocation();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const info = useSelector((state) => state.auth);
 
@@ -25,8 +24,27 @@ export default function Login () {
     const [emailInvalidity, setEmailInvalidity] = useState(false);
     const [passwordInvalidity, setPasswordInvalidity] = useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = useState('Este campo é obrigatório');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('Este campo é obrigatório');
+    const [didMount, setDidMount] = useState(false);
+
     const emailRef = useRef();
     const passwordRef = useRef();
+
+
+    useEffect(() => { setDidMount(true) }, [])
+
+
+    useEffect(()=> {
+        if(didMount && info.loading === 'succeeded' && info.user.error && info.user.error.field === 'email'){
+            setEmailInvalidity(true);
+            setEmailErrorMessage(info.user.error.msg);
+        } else if(didMount && info.loading === 'succeeded' && info.user.error) {
+            setPasswordInvalidity(true);
+            setPasswordErrorMessage(info.user.error.msg);
+        } else if(didMount && info.loading === 'succeeded') {
+            navigate('/espaco');
+        }
+    }, [info]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -54,8 +72,10 @@ export default function Login () {
             const formData = new FormData(form);
             const dataObject = Object.fromEntries(formData.entries());
             // const apiErrors = await sendToApi(dataObject, `http://localhost:3000/auth`, 'POST');
-            dispatch(fetchToken({email: 'matheusmuniz215@gmail.com', senha: 'Muniz9900!'}));
-            console.log(info);
+            dispatch(fetchToken({
+                email: emailRef.current.value, 
+                senha: passwordRef.current.value
+            }));
         }
     }
   
@@ -65,11 +85,9 @@ export default function Login () {
 
                     <h2>Fazer login</h2>
 
-                    {location.state && <Alert variant="success">Conta criada com sucesso!</Alert>}
-
                     <Email emailInvalidity={emailInvalidity} emailErrorMessage={emailErrorMessage} emailRef={emailRef} />
 
-                    <Senha label="Sua senha" passwordInvalidity={passwordInvalidity} passwordRef={passwordRef} passwordErrorMessage="Este campo é obrigatório"/>
+                    <Senha label="Sua senha" passwordInvalidity={passwordInvalidity} passwordRef={passwordRef} passwordErrorMessage={passwordErrorMessage}/>
 
                     <Button  className="my-3" variant="primary" type="submit" style={{ width: "100%" }}>Entrar</Button>
 

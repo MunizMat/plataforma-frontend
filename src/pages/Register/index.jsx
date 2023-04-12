@@ -1,7 +1,9 @@
 import React, { useState, useRef } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { validateEmail, validatePassword, validateRepeatPassword, fieldIsEmpty } from "@modules/formValidation";
-import { sendToApi } from "@modules/apiMethods";
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 // Components
 import { Email } from "../../components/Email";
@@ -76,70 +78,74 @@ export default function Register () {
         if(emailIsValid && passwordIsValid && repeatPasswordIsValid) {
             const form = event.currentTarget;
             const formData = new FormData(form);
-            const dataObject = Object.fromEntries(formData.entries());
-            const apiErrors = await sendToApi(dataObject, 'http://localhost:3000/users', 'POST');
-            if(apiErrors.length > 0){
-                switch(apiErrors[0].field){
+            const body = Object.fromEntries(formData.entries());
+            const response = await axios.post('http://localhost:3000/users', body);
+            const { errors } = response.data;
+            if(errors){
+                switch(errors[0].field){
                     case 'nome':
                         setNameInvalidity(true);
                         break;
                     case 'email':
-                        setEmailErrorMessage(apiErrors[0].message);
+                        setEmailErrorMessage(errors[0].message);
                         setEmailInvalidity(true);
                         break;
                     case 'senha':
-                        setPasswordErrorMessage(apiErrors[0].message);
+                        setPasswordErrorMessage(errors[0].message);
                         setPasswordInvalidity(true);
                         break;
                 }
             } else {
-                navigate('/login', { state: true });
+                toast.success('Conta criada com sucesso!');
+                navigate('/login');
             }
 
         }
     }
 
     return(
-        <Container  className="d-flex justify-content-center align-items-center">
+        <>
+            <Container  className="d-flex justify-content-center align-items-center">
 
-                <Form noValidate className="form bg-light p-3 ps-4 rounded" onSubmit={handleSubmit} style={{ width: "450px", textAlign: "left", marginTop: '50px'}}>
+                    <Form noValidate className="form bg-light p-3 ps-4 rounded" onSubmit={handleSubmit} style={{ width: "450px", textAlign: "left", marginTop: '50px'}}>
 
-                    <h2>Crie sua conta</h2>
+                        <h2>Crie sua conta</h2>
 
-                    <Form.Group className="mb-3" controlId="formSurname" style={{textAlign: "left"}} >
-                        <Form.Label>Nome</Form.Label>
-                        <Form.Control name="nome" isInvalid={nameInvalidity} ref={nameRef} required type="text" placeholder="Nome" />
-                        <Form.Control.Feedback type="invalid">Este campo é obrigatório</Form.Control.Feedback>
-                    </Form.Group>
+                        <Form.Group className="mb-3" controlId="formSurname" style={{textAlign: "left"}} >
+                            <Form.Label>Nome</Form.Label>
+                            <Form.Control name="nome" isInvalid={nameInvalidity} ref={nameRef} required type="text" placeholder="Nome" />
+                            <Form.Control.Feedback type="invalid">Este campo é obrigatório</Form.Control.Feedback>
+                        </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formName" style={{textAlign: "left"}} >
-                        <Form.Label>Sobrenome</Form.Label>
-                        <Form.Control name="sobrenome" type="text" placeholder="Sobrenome" />
-                    </Form.Group>
+                        <Form.Group className="mb-3" controlId="formName" style={{textAlign: "left"}} >
+                            <Form.Label>Sobrenome</Form.Label>
+                            <Form.Control name="sobrenome" type="text" placeholder="Sobrenome" />
+                        </Form.Group>
 
-                    <Email 
-                    emailInvalidity={emailInvalidity} 
-                    emailErrorMessage={emailErrorMessage} 
-                    emailRef={emailRef} />
+                        <Email 
+                        emailInvalidity={emailInvalidity} 
+                        emailErrorMessage={emailErrorMessage} 
+                        emailRef={emailRef} />
 
-                    <Senha 
-                    label="Crie sua senha" 
-                    passwordInvalidity={passwordInvalidity} 
-                    passwordRef={passwordRef} 
-                    passwordErrorMessage={passwordErrorMessage}/>
+                        <Senha 
+                        label="Crie sua senha" 
+                        passwordInvalidity={passwordInvalidity} 
+                        passwordRef={passwordRef} 
+                        passwordErrorMessage={passwordErrorMessage}/>
 
-                    <Form.Group className="mb-3" controlId="formBasicRepeatPassword" style={{textAlign: "left"}} >
-                        <Form.Label>Repita sua senha</Form.Label>
-                        <Form.Control name="repetirSenha" isInvalid={repeatPasswordInvalidity} ref={repeatPasswordRef} required type="password" placeholder="Senha" />
-                        <Form.Control.Feedback type="invalid">{repeatPasswordErrorMessage}</Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Text >Sua senha deve conter:<br/>- Entre 6 a 20 caracteres<br/>- Letras maiúsculas e minúsculas<br/>- Números<br/>- Caracteres especiais(Ex: !, @, #, $)</Form.Text>
+                        <Form.Group className="mb-3" controlId="formBasicRepeatPassword" style={{textAlign: "left"}} >
+                            <Form.Label>Repita sua senha</Form.Label>
+                            <Form.Control name="repetirSenha" isInvalid={repeatPasswordInvalidity} ref={repeatPasswordRef} required type="password" placeholder="Senha" />
+                            <Form.Control.Feedback type="invalid">{repeatPasswordErrorMessage}</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Text >Sua senha deve conter:<br/>- Entre 6 a 20 caracteres<br/>- Letras maiúsculas e minúsculas<br/>- Números<br/>- Caracteres especiais(Ex: !, @, #, $)</Form.Text>
 
-                    <Button  className="my-3" variant="primary" type="submit" style={{ width: "100%" }}>Criar conta</Button>
+                        <Button  className="my-3" variant="primary" type="submit" style={{ width: "100%" }}>Criar conta</Button>
 
-                    <Form.Text>Já tem conta? <Link to="/login" style={{textDecoration: "underline"}}>Faça login!</Link></Form.Text>
+                        <Form.Text>Já tem conta? <Link to="/login" style={{textDecoration: "underline"}}>Faça login!</Link></Form.Text>
 
-                </Form>
-        </Container>
+                    </Form>
+            </Container>
+        </>
     )
 }
