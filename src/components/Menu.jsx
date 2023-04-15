@@ -8,8 +8,13 @@ function Menu() {
     <Navbar expand="lg" bg="primary" variant="light">
       <Container>
         <Navbar.Brand href="/" style={{color: "white"}}>Studiez</Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav"></Navbar.Collapse>
+        <Nav className="me-auto">
+          <Nav.Link to="/espaco">Espaco</Nav.Link>
+        </Nav>
         <Nav>
-          <Link to="/login">Login</Link>
+          <Nav.Link to="/login">Login</Nav.Link>
         </Nav>
       </Container>
     </Navbar>

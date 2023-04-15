@@ -11,11 +11,11 @@ import { ToastContainer } from 'react-toastify';
 function App() {
   return (
     <Provider store={store}>
-        <ToastContainer pauseOnHover={false} position="top-right" theme="light"  />
-        <BrowserRouter>
-          <Menu />
-          <MyRoutes />
-        </BrowserRouter>
+          <ToastContainer pauseOnHover={false} position="top-right" theme="light"  />
+          <BrowserRouter>
+            <Menu />
+            <MyRoutes />
+          </BrowserRouter>
     </Provider>
   );
 }

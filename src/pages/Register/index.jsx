@@ -13,6 +13,8 @@ import { Senha } from "../../components/Senha";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
+import Stack from 'react-bootstrap/Stack';
+import Spinner from 'react-bootstrap/Spinner';
 
 import './index.css';
 
@@ -25,6 +27,7 @@ export default function Register () {
     const [emailInvalidity, setEmailInvalidity] = useState(false);
     const [passwordInvalidity, setPasswordInvalidity] = useState(false);
     const [repeatPasswordInvalidity, setRepeatPasswordInvalidity] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     // Estados de controle e manipulação das mensagens de erro a serem exibidas
     const [emailErrorMessage, setEmailErrorMessage] = useState('Este campo é obrigatório');
@@ -79,7 +82,9 @@ export default function Register () {
             const form = event.currentTarget;
             const formData = new FormData(form);
             const body = Object.fromEntries(formData.entries());
+            setIsLoading(true);
             const response = await axios.post('http://localhost:3000/users', body);
+            setIsLoading(false);
             const { errors } = response.data;
             if(errors){
                 switch(errors[0].field){
@@ -109,7 +114,11 @@ export default function Register () {
 
                     <Form noValidate className="form bg-light p-3 ps-4 rounded" onSubmit={handleSubmit} style={{ width: "450px", textAlign: "left", marginTop: '50px'}}>
 
+                    <Stack direction="horizontal" gap={3}>
                         <h2>Crie sua conta</h2>
+
+                        {isLoading && <Spinner as="span" variant="primary" animation="border" />}
+                    </Stack>
 
                         <Form.Group className="mb-3" controlId="formSurname" style={{textAlign: "left"}} >
                             <Form.Label>Nome</Form.Label>
