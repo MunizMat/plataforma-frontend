@@ -73,7 +73,6 @@ export default function Login () {
             const form = event.currentTarget;
             const formData = new FormData(form);
             const dataObject = Object.fromEntries(formData.entries());
-            // const apiErrors = await sendToApi(dataObject, `http://localhost:3000/auth`, 'POST');
             dispatch(fetchToken({
                 email: emailRef.current.value, 
                 senha: passwordRef.current.value

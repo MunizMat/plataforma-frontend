@@ -1,6 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { legacy_createStore as createStore } from 'redux';
 import { rootReducer } from './rootReducer';
 
-export const store = configureStore({ 
-    reducer: rootReducer 
-});
+export const store = createStore(rootReducer);

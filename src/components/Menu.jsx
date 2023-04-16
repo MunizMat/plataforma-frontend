@@ -9,12 +9,11 @@ function Menu() {
       <Container>
         <Navbar.Brand href="/" style={{color: "white"}}>Studiez</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav"></Navbar.Collapse>
         <Nav className="me-auto">
-          <Nav.Link to="/espaco">Espaco</Nav.Link>
+          <Link to="/espaco">Espaco</Link>
         </Nav>
         <Nav>
-          <Nav.Link to="/login">Login</Nav.Link>
+          <Link to="/login">Login</Link>
         </Nav>
       </Container>
     </Navbar>
