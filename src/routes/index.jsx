@@ -4,7 +4,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Espaco from "../pages/Espaco";
-import { PrivateRoute } from "../components/PrivateRoute";
+import { PrivateRoute } from "./PrivateRoute";
 
 export function MyRoutes(){
     return(

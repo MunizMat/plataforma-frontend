@@ -33,20 +33,22 @@ export default function Login () {
     const passwordRef = useRef();
 
 
-    useEffect(() => { setDidMount(true) }, [])
+    useEffect(() => { setDidMount(true) }, []);
 
 
     useEffect(()=> {
-        if(didMount && !auth.isLoading && auth.error?.field === 'email'){
-            setEmailInvalidity(true);
-            setEmailErrorMessage(auth.error.msg);
-        } else if(didMount && !auth.isLoading && auth.error?.field === 'senha') {
-            setPasswordInvalidity(true);
-            setPasswordErrorMessage(auth.error.msg);
-        } else if(didMount && !auth.isLoading) {
-            // navigate('/espaco');
-            console.log('Formulario enviado');
+        if(didMount && !auth.isLoading){
+            if( auth.error?.field === 'email'){
+                setEmailInvalidity(true);
+                setEmailErrorMessage(auth.error.msg);
+            } else if( auth.error?.field === 'senha') {
+                setPasswordInvalidity(true);
+                setPasswordErrorMessage(auth.error.msg);
+            } else {
+                navigate('/espaco');
+            }
         }
+
         console.log(auth);
 
     }, [auth]);
