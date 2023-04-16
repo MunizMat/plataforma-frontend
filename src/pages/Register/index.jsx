@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { validateEmail, validatePassword, validateRepeatPassword, fieldIsEmpty } from "@modules/formValidation";
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import axios from '../../services/axios';
+import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 // Components
@@ -83,7 +83,7 @@ export default function Register () {
             const formData = new FormData(form);
             const body = Object.fromEntries(formData.entries());
             setIsLoading(true);
-            const response = await axios.post('http://localhost:3000/users', body);
+            const response = await axios.post('/users', body);
             setIsLoading(false);
             const { errors } = response.data;
             if(errors){

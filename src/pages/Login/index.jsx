@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { validateEmail, fieldIsEmpty} from "@modules/formValidation";
 import './index.css';
-import { fetchToken } from "../../features/auth/authSlice";
+import { loginRequest } from "../../redux/modules/auth/actions";
 import { useDispatch, useSelector } from 'react-redux';
 
 // Components
@@ -37,15 +37,17 @@ export default function Login () {
 
 
     useEffect(()=> {
-        if(didMount && auth.loading === 'succeeded' && auth.user.error && auth.user.error.field === 'email'){
+        if(didMount && !auth.isLoading && auth.error?.field === 'email'){
             setEmailInvalidity(true);
-            setEmailErrorMessage(auth.user.error.msg);
-        } else if(didMount && auth.loading === 'succeeded' && auth.user.error) {
+            setEmailErrorMessage(auth.error.msg);
+        } else if(didMount && !auth.isLoading && auth.error?.field === 'senha') {
             setPasswordInvalidity(true);
-            setPasswordErrorMessage(auth.user.error.msg);
-        } else if(didMount && auth.loading === 'succeeded') {
-            navigate('/espaco');
+            setPasswordErrorMessage(auth.error.msg);
+        } else if(didMount && !auth.isLoading) {
+            // navigate('/espaco');
+            console.log('Formulario enviado');
         }
+
     }, [auth]);
 
     const handleSubmit = async (event) => {
@@ -73,10 +75,7 @@ export default function Login () {
             const form = event.currentTarget;
             const formData = new FormData(form);
             const dataObject = Object.fromEntries(formData.entries());
-            dispatch(fetchToken({
-                email: emailRef.current.value, 
-                senha: passwordRef.current.value
-            }));
+            dispatch(loginRequest(dataObject));
         }
     }
   
@@ -87,7 +86,7 @@ export default function Login () {
                     <Stack direction="horizontal" gap={3}>
                         <h2>Fazer login</h2>
 
-                        {auth.loading === 'pending' && <Spinner as="span" variant="primary" animation="border" />}
+                        {auth.isLoading && <Spinner as="span" variant="primary" animation="border" />}
                     </Stack>
 
                     <Email emailInvalidity={emailInvalidity} emailErrorMessage={emailErrorMessage} emailRef={emailRef} />
