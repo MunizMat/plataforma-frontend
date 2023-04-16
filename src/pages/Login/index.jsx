@@ -47,6 +47,7 @@ export default function Login () {
             // navigate('/espaco');
             console.log('Formulario enviado');
         }
+        console.log(auth);
 
     }, [auth]);
 

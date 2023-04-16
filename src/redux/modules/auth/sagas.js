@@ -8,7 +8,8 @@ function* loginRequest({ payload }){
         const response = yield call(axios.post, '/auth', payload);
         yield put(actions.loginSuccess({ ...response.data }));
 
-        console.log(response.data);
+        axios.defaults.headers.Authorization = `Bearer ${response.data.token}`;
+
     } catch (error) {
         console.log(error);
         yield put(actions.loginFailure());

@@ -21,11 +21,15 @@ export default function (state = initialState, action){
 
             const newState = { ...state };
             newState.isLoading = false;
-            const { error } = action.payload;
+            const { error, email, token } = action.payload;
             if(error){
                 newState.error = error;
                 return newState;
             }
+
+            newState.token = token;
+            newState.isLoggedIn = true;
+            newState.user = { email };
 
             return newState;
         }
