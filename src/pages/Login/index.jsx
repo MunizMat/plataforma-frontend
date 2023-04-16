@@ -15,6 +15,7 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Spinner from 'react-bootstrap/Spinner';
 import Stack from 'react-bootstrap/Stack';
+import Alert from 'react-bootstrap/Alert';
 
 
 export default function Login () {
@@ -91,6 +92,8 @@ export default function Login () {
 
                         {auth.isLoading && <Spinner as="span" variant="primary" animation="border" />}
                     </Stack>
+
+                    {auth.error === 'failed' && <Alert variant="danger">Não foi possível efetuar seu login. Tente novamente</Alert>}
 
                     <Email emailInvalidity={emailInvalidity} emailErrorMessage={emailErrorMessage} emailRef={emailRef} />
 

@@ -21,12 +21,14 @@ export default function (state = initialState, action){
 
             const newState = { ...state };
             newState.isLoading = false;
+    
             const { error, email, token } = action.payload;
             if(error){
                 newState.error = error;
                 return newState;
             }
 
+            newState.error = null;
             newState.token = token;
             newState.isLoggedIn = true;
             newState.user = { email };
@@ -34,8 +36,20 @@ export default function (state = initialState, action){
             return newState;
         }
 
-        case types.LOGIN_FAILURE:
-            return state;
+        case types.LOGIN_FAILURE: {
+            const newState = { ...state };
+
+            newState.isLoading = false;
+            newState.error = 'failed';
+            return newState;
+        }
+
+        case types.LOGOUT: {
+            console.log('logout');
+            const newState = { ...initialState };
+            return newState;
+        }
+
 
         default: 
             return state;
