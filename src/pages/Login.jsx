@@ -1,13 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { validateEmail, fieldIsEmpty} from "@modules/formValidation";
-import './index.css';
-import { loginRequest } from "../../redux/modules/auth/actions";
+import { loginRequest } from "../redux/modules/auth/actions";
 import { useDispatch, useSelector } from 'react-redux';
 
 // Components
-import { Email } from "../../components/Email";
-import { Senha } from "../../components/Senha";
+import { Email } from "../components/Email";
+import { Senha } from "../components/Senha";
 
 //Bootstrap 
 import Form from 'react-bootstrap/Form';

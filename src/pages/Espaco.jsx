@@ -3,8 +3,6 @@ import React from "react";
 // Bootstrap
 import Container from 'react-bootstrap/Container';
 
-import './index.css';
-
 export default function Espaco () {
 
     return(

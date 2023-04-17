@@ -1,7 +1,0 @@
-small > a {
-    color: black;
-}
-
-small > a:hover {
-    color: rgba(0, 0, 0, 0.54);
-}

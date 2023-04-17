@@ -41,6 +41,14 @@ html {
   min-height: 100vh;
 }
 
+small > a {
+  color: black;
+}
+
+small > a:hover {
+  color: rgba(0, 0, 0, 0.54);
+}
+
 body {
   margin: 0;
   display: flex;
@@ -80,3 +88,14 @@ button:focus-visible {
   color: black;
 }
 
+.nav-link {
+  color: white;
+}
+
+.navbar-nav .nav-link.active, .navbar-nav .nav-link.show{
+  color: white;
+}
+
+.nav-link:hover {
+  color: rgba(255, 255, 255, 0.606);
+}

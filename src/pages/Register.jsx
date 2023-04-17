@@ -1,13 +1,13 @@
 import React, { useState, useRef } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { validateEmail, validatePassword, validateRepeatPassword, fieldIsEmpty } from "@modules/formValidation";
-import axios from '../../services/axios';
+import axios from '../services/axios';
 import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 // Components
-import { Email } from "../../components/Email";
-import { Senha } from "../../components/Senha";
+import { Email } from "../components/Email";
+import { Senha } from "../components/Senha";
 
 // Bootstrap
 import Form from 'react-bootstrap/Form';
@@ -15,8 +15,6 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Stack from 'react-bootstrap/Stack';
 import Spinner from 'react-bootstrap/Spinner';
-
-import './index.css';
 
 export default function Register () {
 

@@ -1,9 +1,13 @@
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import Container from 'react-bootstrap/Container';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../redux/modules/auth/actions'
+
+// Bootstrap
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import Container from 'react-bootstrap/Container';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+
 
 function Menu() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -12,14 +16,26 @@ function Menu() {
   return (
     <Navbar expand="lg" bg="primary" variant="light">
       <Container>
-        <Navbar.Brand href="/" style={{color: "white"}}>Studiez</Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Nav className="me-auto">
-          <Link to="/espaco">Espaco</Link>
-        </Nav>
+        {isLoggedIn ? 
+        (<>
         <Nav>
-        {isLoggedIn ? (<Link onClick={() => dispatch(logout())} to="/">Sair</Link>) : (<Link to="/login">Entrar</Link>)}
+          <Navbar.Brand href='/espaco' style={{ color: 'white' }} >Studiez</Navbar.Brand>
+          <NavDropdown style={{ color: 'white' }} title="Avaliações" id='dropdown' >
+            <NavDropdown.Item  href='/realizar-avaliacao'>Realizar avaliação</NavDropdown.Item>
+            <NavDropdown.Item  href='/'>Histórico</NavDropdown.Item>
+          </NavDropdown>
         </Nav>
+          <Nav>
+            <Link onClick={() => dispatch(logout())} to="/">Sair</Link>
+          </Nav>
+        </>)
+         : 
+        (<>
+          <Navbar.Brand href='/' style={{ color: 'white' }} >Studiez</Navbar.Brand>
+          <Nav>
+            <Link to="/login">Entrar</Link>
+          </Nav>
+        </>)}
       </Container>
     </Navbar>
   );

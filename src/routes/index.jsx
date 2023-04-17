@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Espaco from "../pages/Espaco";
 import { PrivateRoute } from "./PrivateRoute";
+import RealizarAvaliacao from "../pages/RealizarAvaliacao";
 
 export function MyRoutes(){
     return(
@@ -14,6 +15,7 @@ export function MyRoutes(){
             <Route exact path="/register" element={<Register />} />
             <Route exact element={<PrivateRoute />}>
                 <Route exact path="/espaco" element={<Espaco />}/>
+                <Route exact path="/realizar-avaliacao" element={<RealizarAvaliacao />}/>
             </Route>
         </Routes>
     )
