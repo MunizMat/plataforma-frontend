@@ -5,7 +5,7 @@ export default reducers => {
     const persistedReducer = persistReducer({
         key: 'Studiez',
         storage,
-        whitelist: ['auth']
+        whitelist: ['auth', 'exam']
     }, reducers);
 
     return persistedReducer;

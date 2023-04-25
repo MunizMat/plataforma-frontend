@@ -21,7 +21,7 @@ function Menu() {
         <Nav>
           <Navbar.Brand href='/espaco' style={{ color: 'white' }} >Studiez</Navbar.Brand>
           <NavDropdown style={{ color: 'white' }} title="Avaliações" id='dropdown' >
-            <NavDropdown.Item  href='/realizar-avaliacao'>Realizar avaliação</NavDropdown.Item>
+            <NavDropdown.Item  href='/avaliacao'>Realizar avaliação</NavDropdown.Item>
             <NavDropdown.Item  href='/'>Histórico</NavDropdown.Item>
           </NavDropdown>
         </Nav>

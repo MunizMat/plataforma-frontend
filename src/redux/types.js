@@ -3,4 +3,8 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const LOGOUT = 'LOGOUT';
 
+export const EXAM_REQUEST = 'EXAM_REQUEST';
+export const EXAM_SUCCESS = 'EXAM_SUCCESS';
+export const EXAM_FAILURE = 'EXAM_FAILURE';
+
 export const PERSIST_REHYDRATE = 'persist/REHYDRATE';

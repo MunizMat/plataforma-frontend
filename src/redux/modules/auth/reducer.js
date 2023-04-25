@@ -22,7 +22,7 @@ export default function (state = initialState, action){
             const newState = { ...state };
             newState.isLoading = false;
     
-            const { error, email, token } = action.payload;
+            const { id, error, email, token } = action.payload;
             if(error){
                 newState.error = error;
                 return newState;
@@ -31,7 +31,7 @@ export default function (state = initialState, action){
             newState.error = null;
             newState.token = token;
             newState.isLoggedIn = true;
-            newState.user = { email };
+            newState.user = { id, email };
 
             return newState;
         }

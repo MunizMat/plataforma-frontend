@@ -1,14 +1,29 @@
 import React, { useState, useEffect } from "react";
 
+// React Router
+import { useNavigate } from "react-router-dom";
+
+//Redux
+import { useDispatch, useSelector } from 'react-redux';
+import { examRequest } from '../../redux/modules/exam/actions';
+
 // Bootstrap Imports
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
-import axios from '../services/axios';
+import axios from '../../services/axios';
 
-export default function RealizarAvaliacao () {
+export default function FormAvaliacao () {
+    const [didMount, setDidMount] = useState(false);
+
+    // React Redux Hooks
+    const exam = useSelector(state => state.exam);
+    const userId = useSelector(state => state.auth.user.id);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     // Alerts and Errors
     const [axiosError, setAxiosError] = useState(false);
     const [examDoesntExistError, setExamDoesntExistError] = useState(false);
@@ -31,6 +46,10 @@ export default function RealizarAvaliacao () {
     const [anoIsValid, setAnoIsValid] = useState(true);
     const [diaIsValid, setDiaIsValid] = useState(true);
     const [provaIsValid, setProvaIsValid] = useState(true);
+
+    // Effects
+
+    useEffect(() => { setDidMount(true) }, []);
 
     useEffect(() => {
         async function getAvaliacoes(){
@@ -75,6 +94,13 @@ export default function RealizarAvaliacao () {
         const provas = [...new Set(provasDisponiveisComRepeticao.map(prova => prova))];
         setProvasDisponiveis(provas);
     }, [dia]);
+
+    useEffect(() => {
+        console.log(exam);
+        if(didMount && !exam.isLoading && !exam.error){
+            navigate('/avaliacao/iniciada');
+        }
+    }, [exam]);
 
     // Handlers
     const handleVestChange = (e) => {
@@ -121,9 +147,7 @@ export default function RealizarAvaliacao () {
 
        if (!examsFound[0]) return setExamDoesntExistError(true);
 
-       const response = await axios.get(`/provas/${examsFound[0].id}`);
-
-       console.log(response.data);
+       dispatch(examRequest({ userId, provaId: examsFound[0].id, isInProgress: true }));
     };
 
     // Functions
