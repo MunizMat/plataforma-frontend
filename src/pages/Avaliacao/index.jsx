@@ -147,7 +147,7 @@ export default function FormAvaliacao () {
 
        if (!examsFound[0]) return setExamDoesntExistError(true);
 
-       dispatch(examRequest({ userId, provaId: examsFound[0].id, isInProgress: true }));
+       dispatch(examRequest({ userId, provaId: examsFound[0].id, isInProgress: true, tempoDeProva: examsFound[0].tempoDeProva }));
     };
 
     // Functions

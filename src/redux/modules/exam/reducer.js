@@ -5,6 +5,7 @@ const initialState = {
     prova: null,
     simulado: null,
     respostas: {},
+    tempoDeProvaMilisegundos: null,
     error: null
 };
 
@@ -13,20 +14,25 @@ export default function (state = initialState, action){
         case types.EXAM_REQUEST: {
             const newState = { ...state };
             newState.isLoading = true;
+            newState.error = false;
             return newState;
         }
 
         case types.EXAM_SUCCESS: {
             const newState = { ...state };
             newState.isLoading = false;
-            const { simulado, prova  } = action.payload;
+            newState.error = false;
+            const { simulado, prova, tempoDeProvaMilisegundos  } = action.payload;
             newState.prova = prova;
             newState.simulado = simulado;
+            newState.tempoDeProvaMilisegundos = tempoDeProvaMilisegundos;
             return newState;
         }
 
         case types.EXAM_FAILURE: {
+            const newState = { ...state };
             newState.isLoading = false;
+            newState.error = true;
             return state;
         }
 
