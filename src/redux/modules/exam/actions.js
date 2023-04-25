@@ -21,3 +21,11 @@ export function examFailure(payload){
     };
 };
 
+export function updateAnswers(payload){
+    return{
+        type: types.UPDATE_ANSWERS,
+        payload,
+    };
+};
+
+
