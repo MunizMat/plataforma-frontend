@@ -45,7 +45,7 @@ export default function Login () {
                 setPasswordInvalidity(true);
                 setPasswordErrorMessage(auth.error.msg);
             } else {
-                navigate('/espaco');
+                navigate('/espaco-aluno');
             }
         }
 

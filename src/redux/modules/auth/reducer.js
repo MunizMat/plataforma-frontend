@@ -22,7 +22,7 @@ export default function (state = initialState, action){
             const newState = { ...state };
             newState.isLoading = false;
     
-            const { id, error, email, token } = action.payload;
+            const { id, error, email, token, nome } = action.payload;
             if(error){
                 newState.error = error;
                 return newState;
@@ -31,7 +31,7 @@ export default function (state = initialState, action){
             newState.error = null;
             newState.token = token;
             newState.isLoggedIn = true;
-            newState.user = { id, email };
+            newState.user = { id, nome, email };
 
             return newState;
         }
@@ -45,7 +45,6 @@ export default function (state = initialState, action){
         }
 
         case types.LOGOUT: {
-            console.log('logout');
             const newState = { ...initialState };
             return newState;
         }
