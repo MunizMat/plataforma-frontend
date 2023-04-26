@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 
+import {useNavigate} from 'react-router-dom'
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { updateAnswers } from '../../redux/modules/exam/actions';
+import { updateAnswers, finishExam } from '../../redux/modules/exam/actions';
 
 // Bootstrap Imports
 import Container from 'react-bootstrap/Container';
@@ -21,25 +22,41 @@ import { Timer } from "../../components/Timer";
 import axios from '../../services/axios';
 
 export default function Iniciada () {
+    // Hooks
     const exam = useSelector(state => state.exam);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    // States
+    const [show, setShow] = useState(false);
+    
+    // Variables 
     const prova = exam.prova;
     const arrayQuestoes = Object.keys(prova.gabarito);
     const numQuestoes = arrayQuestoes.length;
-    const [show, setShow] = useState(false);
 
-    console.log(exam);
-    
     // Handlers
     const handleRadioChange = (e) => {
         const questao = e.target.name.replace('Q', '');
         const resposta = e.target.value;
         dispatch(updateAnswers({ questao, resposta }));
     };
+    
+
+    const handleSubmit = async () => {
+        try {
+            const data = { simuladoId: exam.simulado.id ,isInProgress: false, finishedAt: new Date(Date.now()), respostas: exam.respostas };
+            const response = await axios.put(`/simulados/${data.simuladoId}`, data);
+            navigate('/avaliacao/finalizada');
+        
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-   
+
 
     return(
         <Container as={Form}>
@@ -47,7 +64,7 @@ export default function Iniciada () {
                 <ExamTitle as={Col} dia={prova.dia} titulo={`${prova.vestibular} ${prova.ano}`} prova={`Prova ${prova.prova}`} />
                 <Stack className="align-items-end" >
                     <Timer deadline={exam.simulado.availableUntil} />
-                    <Button style={{ width: '60%'}} onClick={() => setShow(true)} >Finalizar simulado</Button>
+                    <Button style={{ width: '60%'}} onClick={handleShow} >Finalizar simulado</Button>
                 </Stack>
             </Stack>
             <Container className="p-0 my-5 " style={{ color: 'black'}}>
@@ -70,7 +87,7 @@ export default function Iniciada () {
                 <Modal.Body>Tem certeza que desejas finalizar a avaliação?</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>Voltar</Button>
-                    <Button variant="primary" type="submit" onClick={handleClose}>Finalizar</Button>
+                    <Button variant="primary" type="submit" onClick={handleSubmit}>Finalizar</Button>
                 </Modal.Footer>
             </Modal>
         </Container>

@@ -5,8 +5,8 @@ import Iniciada from "../pages/Avaliacao/Iniciada";
 
 
 export function ExamRoute(){
-    const isInProgress = useSelector((state) => state.exam.simulado.isInProgress);
+    const isInProgress = useSelector((state) => state.exam.simulado);
     return(
-        isInProgress ? <Iniciada /> : <Outlet />
+        isInProgress ? <Navigate to="/avaliacao/iniciada" /> : <Outlet />
     )
 }

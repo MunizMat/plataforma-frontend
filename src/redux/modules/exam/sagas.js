@@ -14,4 +14,5 @@ function* examRequest({ payload }){
     }
 }
 
+
 export default all([takeLatest(types.EXAM_REQUEST, examRequest)]);

@@ -44,6 +44,11 @@ export default function (state = initialState, action){
             return newState;
         }
 
+        case types.FINISH_EXAM: {
+            const newState = {...initialState};
+            return newState;
+        }
+
         default: 
             return state;
     }

@@ -28,4 +28,11 @@ export function updateAnswers(payload){
     };
 };
 
+export function finishExam(payload){
+    return{
+        type: types.FINISH_EXAM,
+        payload,
+    };
+};
+
 

@@ -4,9 +4,9 @@ import { useSelector } from "react-redux";
 
 
 export function MyRoute(){
-    const isInProgress = useSelector((state) => state.exam.simulado.isInProgress);
+    const exam = useSelector((state) => state.exam);
     return(
 
-        isInProgress ? <Navigate to="/avaliacao/iniciada" /> : <Outlet />
+        exam.simulado ? <Outlet /> : <Navigate to='espaco'/>
     )
 }

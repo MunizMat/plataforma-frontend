@@ -20,7 +20,7 @@ export function Timer(props) {
     return () => clearInterval(interval);
   }, []);
   return (
-    <h1 className="col display-1" >{`${hours}:${minutes}:${seconds}`}</h1>
+    <h1 className="col display-1" >{`${hours}:${minutes > 9 ? minutes : `0${minutes}`}:${seconds > 9 ? seconds : `0${seconds}`}`}</h1>
   );
 }
 
