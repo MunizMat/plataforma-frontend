@@ -1,15 +1,46 @@
 import React from "react";
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Image from 'react-bootstrap/Image';
+import studiesImg from '../assets/images/estudos2.jpg';
+import muniz from '../assets/images/muniz.jpg';
 
 export default function Home () {
     return(
+        <>
             <Stack className="p-5 ms-5" gap={3} style={{textAlign: "left"}}>
-                <h1 className="display-2">Studiez</h1>
-                <h3 className="display-2">Sua plataforma de estudos</h3>
+                <h1 className="display-1">Studiez</h1>
+                <h3 className="display-5">Sua plataforma de estudos para vestibulares</h3>
                 <div className="col-md-3">
-                    <Button variant="primary" as="a" href="/login">Faça login ou crie sua conta</Button>
+                    <Button className="me-2" variant="primary" as="a" href="/login">Faça login</Button>
+                    <span>ou <a style={{ textDecoration: 'underline'}} href="/register" >crie sua conta</a></span>
                 </div>
             </Stack>
+            <section className="bg-dark p-5 row">
+                <section className="row">
+                    <Col className="ms-5" style={{ textAlign: 'left'}}>
+                        <h1 className="mb-5">Sobre</h1>
+                        <p className="lead mb-5" >A Studiez é uma plataforma totalmente gratuita e intuitiva de auxílio em estudos para vestibulares no Brasil. Através da plataforma, o aluno consegue realizar simulados e obter informações e dados a respeito do seu desempenho em cada um deles. Os simulados, em sua essência, são provas antigas dos vestibulares mais populares do Brasil, como o vestibular da Unicamp, da Fuvest, e do Enem. Vale ressaltar que a plataforma é apenas um sistemas de apoio para alunos, não um sistema completo. A ideia é que o aluno tenha a prova em mãos, seja de forma impressa ou digital, e utilize a plataforma apenas para preencher suas respostas e obter a correção devida.</p>
+                    </Col>
+                    <Col>
+                        <Image className="mt-5" rounded width={240} src={studiesImg} />
+                    </Col>
+                </section>
+                <section className="row">
+                <Col className="ms-5" style={{ textAlign: 'left'}}>
+                        <blockquote class="blockquote">
+                            <p class="mb-3">A Studiez começou com um garoto que sonhava estudar numa federal. A plataforma é, antes de tudo, um projeto de uma pessoa apaixonada por estudos e por tecnologia, e a plataforma vai muito além simplesmente daquilo que ela pode oferecer. Ela abrange sonhos, projetos pessoais e paixões</p>
+                            <footer class="blockquote-footer">Matheus Muniz - <cite title="Source Title">Criador e desenvolvedor da Studiez</cite></footer>
+                        </blockquote>
+                    </Col>
+                    <Col>
+                        <Image rounded width={240} src={muniz} />
+                    </Col>
+                </section>
+            </section>
+        </>
     )
 }

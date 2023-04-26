@@ -149,7 +149,7 @@ export default function Register () {
 
                         <Button  className="my-3" variant="primary" type="submit" style={{ width: "100%" }}>Criar conta</Button>
 
-                        <Form.Text>Já tem conta? <Link to="/login" style={{textDecoration: "underline"}}>Faça login!</Link></Form.Text>
+                        <Form.Text>Já possui conta? <Link to="/login" style={{textDecoration: "underline"}}>Faça login!</Link></Form.Text>
 
                     </Form>
             </Container>
