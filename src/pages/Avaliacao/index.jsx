@@ -13,7 +13,9 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
+import {removeDuplicates} from "../../modules/removeDuplicados";
 import axios from '../../services/axios';
+import { Avaliacoes, Vestibular } from "../../modules/Avaliacoes";
 
 export default function FormAvaliacao () {
     const [didMount, setDidMount] = useState(false);
@@ -35,8 +37,8 @@ export default function FormAvaliacao () {
     const [prova, setProva] = useState('');
 
     // Options
-    const [avaliacoes, setAvaliacoes] = useState([]);
-    const [vestibulares, setVestibulares] = useState([]);
+    const [avaliacoesDisponiveis, setAvaliacoesDisponiveis] = useState([]);
+    const [vestibularesDisponiveis, setVestibularesDisponiveis] = useState([]);
     const [anosDisponiveis, setAnosDisponiveis] = useState([]);
     const [provasDisponiveis, setProvasDisponiveis] = useState([]);
     const [diasDisponiveis, setDiasDisponiveis] = useState(null);
@@ -54,10 +56,11 @@ export default function FormAvaliacao () {
     useEffect(() => {
         async function getAvaliacoes(){
             try {
-                const response = await axios.get('/provas');
-                setAvaliacoes(response.data);
-                const vestibulares = [...new Set(response.data.map((prova) => prova.vestibular))]; 
-                setVestibulares(vestibulares);
+                const studify = new Avaliacoes();
+                const avaliacoes = await studify.avaliacoes;
+                setAvaliacoesDisponiveis(avaliacoes);
+                const vestibulares = removeDuplicates(avaliacoes, 'vestibular');
+                setVestibularesDisponiveis(vestibulares);
             } catch (error) {
                 console.log(error);
                 setAxiosError(true);
@@ -68,21 +71,19 @@ export default function FormAvaliacao () {
     }, []);
 
     useEffect(() => {
-        const anosDisponiveisComRepeticao = avaliacoes.filter(avaliacao => avaliacao.vestibular === vestibular).map(avaliacao => avaliacao.ano);
-        const anos = [...new Set(anosDisponiveisComRepeticao.map(ano => ano))];
+        const vest = new Vestibular(avaliacoesDisponiveis, vestibular);
+        const anos = vest.findAnosDisponiveis();
         setAnosDisponiveis(anos);
 
     }, [vestibular]);
 
     useEffect(() => {
-        const avaliacoesComRepeticao = avaliacoes.filter(avaliacao => avaliacao.vestibular === vestibular && avaliacao.ano === ano);
-        const diasDisponiveisComRepeticao = avaliacoesComRepeticao.map(avaliacao => avaliacao.dia);
-        const dias = [...new Set(diasDisponiveisComRepeticao.map(dia => dia))];
+        const vest = new Vestibular(avaliacoesDisponiveis, vestibular, ano);
+        const dias = vest.findDiasDisponiveis();
         if(!dias[0]){
             setDia(null);
             setDiasDisponiveis(null);
-            const provasDisponiveisComRepeticao = avaliacoesComRepeticao.map(avaliacao => avaliacao.prova);
-            const provas = [...new Set(provasDisponiveisComRepeticao.map(prova => prova))];
+            const provas = vest.findProvasDisponiveis();
             setProvasDisponiveis(provas);
         } else {
             setDiasDisponiveis(dias);
@@ -90,54 +91,28 @@ export default function FormAvaliacao () {
     }, [ano]);
 
     useEffect(() => {
-        const provasDisponiveisComRepeticao = avaliacoes.filter(avaliacao => avaliacao.vestibular === vestibular && avaliacao.ano === ano && avaliacao.dia === dia).map(avaliacao => avaliacao.prova);
-        const provas = [...new Set(provasDisponiveisComRepeticao.map(prova => prova))];
+        const vest = new Vestibular(avaliacoesDisponiveis, vestibular, ano, dia);
+        const provas = vest.findProvasDisponiveis();
         setProvasDisponiveis(provas);
     }, [dia]);
 
     useEffect(() => {
-        console.log(exam);
         if(didMount && !exam.isLoading && !exam.error){
             navigate('/avaliacao/iniciada');
         }
     }, [exam]);
 
     // Handlers
-    const handleVestChange = (e) => {
-        setVestibular(e.target.value);
+    const handleSelectChange = (event, inputSetter, inputValiditySetter) => {
+        inputSetter(event.target.value);
         setExamDoesntExistError(false);
-        if (e.target.value){
-            setVestIsValid(true);
+        if (event.target.value){
+            inputValiditySetter(true);
         }
-    };
-
-    const handleAnoChange = (e) => {
-        setAno(e.target.value);
-        setExamDoesntExistError(false);
-        if (e.target.value){
-            setAnoIsValid(true);
-        }
-    };
-
-    const handleDiaChange = (e) => {
-        setDia(e.target.value);
-        setExamDoesntExistError(false);
-        if (e.target.value){
-            setDiaIsValid(true);
-        }
-    };
-
-    const handleProvaChange = (e) => {
-        setProva(e.target.value);
-        setExamDoesntExistError(false);
-        if (e.target.value){
-            setProvaIsValid(true);
-        }
-    };
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const data = { vestibular, ano, dia, prova };
 
        const emptyFields = checkEmptyFields();
 
@@ -153,7 +128,7 @@ export default function FormAvaliacao () {
     // Functions
     function checkIfExamExists(vestibular, ano, prova, dia ){
         console.log(prova, dia);
-        const examsFound = avaliacoes.filter(avaliacao => avaliacao.vestibular === vestibular 
+        const examsFound = avaliacoesDisponiveis.filter(avaliacao => avaliacao.vestibular === vestibular 
             && avaliacao.ano === ano 
             && avaliacao.prova === prova 
             && avaliacao.dia === dia);
@@ -187,15 +162,15 @@ export default function FormAvaliacao () {
                         {examDoesntExistError && <Alert variant="danger">Não foi possível encontrar esta prova. Tente novamente</Alert>}
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Vestibular:</Form.Label>
-                            <Form.Select isInvalid={!vestIsValid} onChange={handleVestChange} aria-label="Default select example">
+                            <Form.Select isInvalid={!vestIsValid} onChange={(e) => {handleSelectChange(e, setVestibular, setVestIsValid)}} aria-label="Default select example">
                                 <option value=''>Selecione um vestibular</option>
-                                {vestibulares.map(vest => <option  key={vest} value={vest}>{vest}</option>)}
+                                {vestibularesDisponiveis.map(vest => <option  key={vest} value={vest}>{vest}</option>)}
                             </Form.Select>
                             <Form.Control.Feedback type="invalid">É necessário selecionar um vestibular</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Ano:</Form.Label>
-                            <Form.Select isInvalid={!anoIsValid}  onChange={handleAnoChange} aria-label="Default select example">
+                            <Form.Select isInvalid={!anoIsValid}  onChange={(e) => {handleSelectChange(e, setAno, setAnoIsValid)}} aria-label="Default select example">
                                 <option value=''>Selecione um ano</option>
                                 {anosDisponiveis.map(ano => <option key={ano} value={ano}>{ano}</option>)}
                             </Form.Select>
@@ -203,7 +178,7 @@ export default function FormAvaliacao () {
                         </Form.Group>
                         {diasDisponiveis && <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Dia:</Form.Label>
-                            <Form.Select isInvalid={!diaIsValid} onChange={handleDiaChange} aria-label="Default select example">
+                            <Form.Select isInvalid={!diaIsValid} onChange={(e) => {handleSelectChange(e, setDia, setDiaIsValid)}} aria-label="Default select example">
                                 <option value=''>Selecione um dia</option>
                                 {diasDisponiveis.map(dia => <option key={dia} value={dia}>{dia}</option>)}
                             </Form.Select>
@@ -211,7 +186,7 @@ export default function FormAvaliacao () {
                         </Form.Group>}
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Prova:</Form.Label>
-                            <Form.Select isInvalid={!provaIsValid}  onChange={handleProvaChange} aria-label="Default select example">
+                            <Form.Select isInvalid={!provaIsValid}  onChange={(e) => {handleSelectChange(e, setProva, setProvaIsValid)}} aria-label="Default select example">
                                 <option value={prova}>Selecione uma prova</option>
                                 {provasDisponiveis.map(prova => <option key={prova} value={prova}>{prova}</option>)}
                             </Form.Select>

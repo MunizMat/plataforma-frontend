@@ -22,7 +22,7 @@ export function MyRoutes(){
             </Route>
             <Route exact element={<PrivateRoute />}>
                 <Route exact element={<ExamRoute />}>
-                    <Route path="*" element={<Page404 />} />
+                    <Route exact path="*" element={<Page404 />} />
                     <Route exact path="espaco-aluno" element={<EspacoAluno />}/>
                     <Route exact path="avaliacao" element={<FormAvaliacao />}/>
                 </Route>

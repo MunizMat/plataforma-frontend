@@ -5,7 +5,7 @@ import axios from '../../../services/axios';
 
 function* examRequest({ payload }){
     try {
-        const response = yield call(axios.post, '/simulados', payload);
+        const response = yield call(axios.post, '/provas/simulados', payload);
         yield put(actions.examSuccess({ ...response.data }));
 
     } catch (error) {
