@@ -127,11 +127,12 @@ export default function FormAvaliacao () {
 
     // Functions
     function checkIfExamExists(vestibular, ano, prova, dia ){
-        console.log(prova, dia);
         const examsFound = avaliacoesDisponiveis.filter(avaliacao => avaliacao.vestibular === vestibular 
             && avaliacao.ano === ano 
-            && avaliacao.prova === prova 
+            && avaliacao.provas[prova] === prova 
             && avaliacao.dia === dia);
+        console.log(vestibular, ano, prova, dia);
+        console.log(avaliacoesDisponiveis);
         return examsFound;
     };
 

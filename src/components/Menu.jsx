@@ -19,7 +19,7 @@ function Menu() {
         {isLoggedIn ? 
         (<>
         <Nav>
-          <Navbar.Brand href='/espaco-aluno' style={{ color: 'white' }} >Studiez</Navbar.Brand>
+          <Navbar.Brand href='/espaco-aluno' style={{ color: 'white' }} >StudyFlix</Navbar.Brand>
           <NavDropdown style={{ color: 'white' }} title="Avaliações" id='dropdown' >
             <NavDropdown.Item  href='/avaliacao'>Realizar avaliação</NavDropdown.Item>
             <NavDropdown.Item  href='/'>Histórico</NavDropdown.Item>
@@ -31,7 +31,7 @@ function Menu() {
         </>)
          : 
         (<>
-          <Navbar.Brand href='/' style={{ color: 'white' }} >Studiez</Navbar.Brand>
+          <Navbar.Brand href='/' style={{ color: 'white' }} >StudyFlix</Navbar.Brand>
           <Nav>
             <Link to="/login">Entrar</Link>
           </Nav>
